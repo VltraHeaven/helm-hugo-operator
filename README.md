@@ -1,0 +1,1 @@
+# helm-hugo-operator
