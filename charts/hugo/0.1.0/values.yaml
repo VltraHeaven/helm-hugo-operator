@@ -5,14 +5,17 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: "klakegg/hugo"
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "ext-ubuntu"
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: "hugo"
+# fullnameOverride: ""
+
+site:
+  repoURL: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -21,7 +24,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: "hugo-sa"
 
 podAnnotations: {}
 
@@ -38,20 +41,21 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: hugo-dev.hq.vltraheaven.io
       paths:
       - path: /
-        backend:
-          serviceName: chart-example.local
-          servicePort: 80
+        pathType: "Exact"
+        backend: {}
+        #  serviceName: chart-example.local
+        #  servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
